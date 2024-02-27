@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 public class LoginActivity extends AppCompatActivity {
 
+    // Commit Test
+
     private EditText username, password;
     private Button loginButton;
     private CheckBox rememberMeCheckBox;
