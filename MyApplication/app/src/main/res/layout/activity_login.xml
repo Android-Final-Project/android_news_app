@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E9EAF0"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <View
+        android:id="@+id/logo_1"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/logo" />
+
+    <EditText
+        android:id="@+id/usernameinput"
+        android:layout_width="300dp"
+        android:layout_height="47dp"
+        android:layout_below="@id/logo_1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/inputfield"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:hint="Username" />
+
+    <EditText
+        android:id="@+id/passwordinput"
+        android:layout_width="300dp"
+        android:layout_height="47dp"
+        android:layout_below="@id/usernameinput"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/inputfield"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="300dp"
+        android:layout_height="47dp"
+        android:layout_below="@id/passwordinput"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="Log In"
+        style="@style/MyAppButtonStyle"/>
+
+    <CheckBox
+        android:id="@+id/rememberMeCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loginButton"
+        android:layout_alignStart="@id/loginButton"
+        android:layout_marginTop="10dp"
+        android:text="Remember Me"
+        android:textColor="#092061"
+        android:textSize="12sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/signUpText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/rememberMeCheckbox"
+        android:layout_alignBaseline="@id/rememberMeCheckbox"
+        android:layout_marginStart="130dp"
+        android:text="Sign Up"
+        android:textColor="#092061"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:clickable="true"
+        android:focusable="true" />
+
+</RelativeLayout>

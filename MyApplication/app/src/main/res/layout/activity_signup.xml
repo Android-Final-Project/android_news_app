@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E9EAF0"
+    android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="16dp"
+            android:src="@drawable/arrow" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/signupTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp"
+            android:text="Create Your Account"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#092061" />
+
+        <EditText
+            android:id="@+id/fullnameinput"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_below="@id/signupTitle"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/inputfield"
+            android:padding="16dp"
+            android:hint="Full Name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/usernameinput"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_below="@id/fullnameinput"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/inputfield"
+            android:padding="16dp"
+            android:hint="Username"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/passwordinput"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_below="@id/usernameinput"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/inputfield"
+            android:padding="16dp"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/continueButton"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_below="@id/passwordinput"
+            android:layout_marginTop="24dp"
+            android:text="Continue"
+            style="@style/MyAppButtonStyle" />
+
+</RelativeLayout>

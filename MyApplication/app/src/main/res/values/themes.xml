@@ -1,0 +1,26 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+
+        <!-- Set the default font for the app -->
+        <item name="android:textSize">10sp</item>
+        <item name="android:fontFamily">@font/inter</item>
+
+        <!-- Set the default background color for the app -->
+        <item name="android:colorBackground">#E9EAF0</item>
+    </style>
+
+    <!-- Button style with background and text color -->
+    <style name="MyAppButtonStyle" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/navy_blue</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Theme.MyApplication" parent="Base.Theme.MyApplication">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/inter_font_family</item>
+        <item name="buttonStyle">@style/MyAppButtonStyle</item>
+    </style>
+</resources>
