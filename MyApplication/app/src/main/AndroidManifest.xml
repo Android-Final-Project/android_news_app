@@ -12,31 +12,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
-
-        <!-- Update the SplashActivity intent-filter to make it the launcher activity -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
         <activity
             android:name=".SplashActivity"
-            android:exported="true"> <!-- Make sure this is true -->
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- Remove the MAIN action and LAUNCHER category from MainActivity -->
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-
-        <!-- The rest of your activities -->
         <activity
             android:name=".SignupActivity"
-            android:exported="true" /> <!-- This should be exported="true" to be accessible -->
+            android:exported="true" />
         <activity
             android:name=".LoginActivity"
-            android:exported="true" /> <!-- This should be exported="true" to be accessible -->
-
+            android:exported="true" />
     </application>
 
 </manifest>
