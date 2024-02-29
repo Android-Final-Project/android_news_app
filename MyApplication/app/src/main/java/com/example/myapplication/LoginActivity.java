@@ -6,13 +6,12 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
 public class LoginActivity extends AppCompatActivity {
-
-    // Commit Test
 
     private EditText username, password;
     private Button loginButton;
@@ -32,38 +31,39 @@ public class LoginActivity extends AppCompatActivity {
 
         checkRememberMe();
 
-        loginButton.setOnClickListener(view -> {
-            // Authentication logic here
-            authenticateUser(username.getText().toString(), password.getText().toString());
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                authenticateUser(username.getText().toString(), password.getText().toString());
+            }
         });
 
         TextView signUpText = findViewById(R.id.signUpText);
-        signUpText.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
-            startActivity(intent);
+        signUpText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
     private void authenticateUser(String username, String password) {
-        // Here you should add your authentication logic. This is just a placeholder.
-        boolean isAuthenticated = true; // replace with actual authentication logic
-
-        if (isAuthenticated) {
+        if ("test".equals(username) && "12345".equals(password)) {
             if (rememberMeCheckBox.isChecked()) {
                 saveLoginDetails(username, password);
             } else {
                 clearLoginDetails();
             }
-            // Proceed to the next screen or activity after successful login
-            // Intent intent = new Intent(LoginActivity.this, NextActivity.class);
-            // startActivity(intent);
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
         } else {
             // Show error message
+            Toast.makeText(LoginActivity.this, "Login failed: Username and/or password are incorrect.", Toast.LENGTH_LONG).show();
         }
     }
 
     private void saveLoginDetails(String username, String password) {
-        // Save login credentials securely. This is a simple implementation.
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("Username", username);
         editor.putString("Password", password);
@@ -72,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void clearLoginDetails() {
-        // Clear saved login credentials
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("Username");
         editor.remove("Password");
@@ -81,7 +80,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkRememberMe() {
-        // Check if Remember Me was previously selected and apply saved credentials
         boolean isRememberMe = sharedPreferences.getBoolean("RememberMe", false);
         if (isRememberMe) {
             String savedUsername = sharedPreferences.getString("Username", "");
