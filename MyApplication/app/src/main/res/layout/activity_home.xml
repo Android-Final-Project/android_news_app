@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,6 +7,7 @@
     android:background="#E9EAF0">
 
     <TextView
+        android:id="@+id/app_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Info Stream"
@@ -14,20 +15,118 @@
         android:textSize="15sp"
         android:textColor="@color/white"
         android:background="@color/navy_blue"
-        android:id="@+id/app_title"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"/>
 
+    <HorizontalScrollView
+        android:id="@+id/horizontal_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_below="@id/app_title">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_1"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/navy_blue"
+                android:layout_margin="6dp"
+                android:textSize="10dp"
+                android:text="General" />
+
+            <Button
+                android:id="@+id/btn_2"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/navy_blue"
+                android:layout_margin="6dp"
+                android:textSize="10dp"
+                android:text="Business" />
+
+            <Button
+                android:id="@+id/btn_3"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/navy_blue"
+                android:layout_margin="6dp"
+                android:textSize="10dp"
+                android:text="Sports" />
+
+            <Button
+                android:id="@+id/btn_4"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/navy_blue"
+                android:layout_margin="6dp"
+                android:textSize="10dp"
+                android:text="Technology" />
+
+            <Button
+                android:id="@+id/btn_5"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/navy_blue"
+                android:layout_margin="6dp"
+                android:textSize="10dp"
+                android:text="Health" />
+
+            <Button
+                android:id="@+id/btn_6"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/navy_blue"
+                android:layout_margin="6dp"
+                android:textSize="10dp"
+                android:text="Entertainment" />
+
+            <Button
+                android:id="@+id/btn_7"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/navy_blue"
+                android:layout_margin="6dp"
+                android:textSize="10dp"
+                android:text="Science" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
     <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:id="@+id/progress_bar" />
+        android:layout_below="@id/horizontal_buttons"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/news_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/progress_bar"
+        android:layout_above="@id/bottom_navigation" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/news_recycler_view" />
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_navigation_menu"
+        app:itemTextColor="@color/white"
+        app:itemIconTint="@color/white"
+        android:background="@color/navy_blue"
+        app:labelVisibilityMode="labeled" />
 
-
-</LinearLayout>
+</RelativeLayout>
