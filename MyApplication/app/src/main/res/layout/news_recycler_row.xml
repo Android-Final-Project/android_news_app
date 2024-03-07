@@ -44,6 +44,15 @@
                 android:layout_marginBottom="8dp"
                 android:id="@+id/article_source"/>
 
+            <TextView
+                android:id="@+id/article_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="date"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="end"/>
+
         </LinearLayout>
 
     </LinearLayout>
