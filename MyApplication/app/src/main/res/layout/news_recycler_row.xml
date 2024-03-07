@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="12dp"
     android:elevation="4dp">
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,25 +36,35 @@
                 android:layout_marginBottom="8dp"
                 android:id="@+id/article_title"/>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Horizontal LinearLayout for source and date, ensuring date is at the right -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:text="source"
-                android:layout_marginBottom="8dp"
-                android:id="@+id/article_source"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/article_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:text="date"
-                android:layout_marginBottom="8dp"
-                android:layout_gravity="end"/>
+                <TextView
+                    android:id="@+id/article_source"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="source"/>
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/article_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="date"
+                    android:layout_marginStart="8dp"
+                    android:layout_gravity="end"/>
+
+            </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>
