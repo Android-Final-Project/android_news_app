@@ -17,6 +17,37 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"/>
 
+    <TextView
+        android:id="@+id/search_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:textSize="18sp"
+        android:layout_below="@id/app_title"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:textColor="@color/navy_blue"
+        android:textStyle="bold"/>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/search_view_border"
+        app:queryHint="Search news"
+        android:layout_below="@id/search_title"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/news_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_view" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_saved"
         android:layout_width="match_parent"
@@ -27,5 +58,4 @@
         app:menu="@menu/bottom_navigation_menu"
         app:labelVisibilityMode="labeled"
         android:layout_alignParentBottom="true"/>
-
 </RelativeLayout>
