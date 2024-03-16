@@ -69,10 +69,13 @@
             android:text="Saved articles"/>
 
         <ListView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
             android:id="@+id/profileArticleList"
-            ></ListView>
+            android:layout_width="match_parent"
+            android:layout_height="255dp"
+            android:layout_gravity="center"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10.0sp"
+            tools:listitem="@layout/profile_articles_list_item" />
 
         <TextView
             android:layout_width="match_parent"

@@ -9,6 +9,7 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import com.example.myapplication.customadapter.ProfileArticleAdapter;
 import com.example.myapplication.model.User;
 
 import java.util.ArrayList;
@@ -48,9 +49,8 @@ public class ProfileActivity extends AppCompatActivity {
         textViewProfileLocation.setText(loggedUser.getLocation());
         textViewProfileSavedArticlesTitle.setText("Saved articules (3)");
 
-        ArrayAdapter<String> articlesAdapter = new ArrayAdapter<>(this,
-                R.layout.profile_articles_list_item, R.id.profileArticleTitle, savedArticles);
-        profileArticleList.setAdapter(articlesAdapter);
+        ProfileArticleAdapter profileArticleAdapter = new ProfileArticleAdapter(this, savedArticles);
+        profileArticleList.setAdapter(profileArticleAdapter);
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, newsLanguage);
         spinnerNewsLanguage.setAdapter(spinnerAdapter);
