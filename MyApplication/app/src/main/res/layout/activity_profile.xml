@@ -33,7 +33,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/profile_name"
+            android:id="@+id/textViewProfileFullName"
             android:textColor="@color/black"
             android:layout_marginTop="15dp"
             android:textSize="25dp"
@@ -44,7 +44,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/profile_location"
+            android:id="@+id/textViewProfileLocation"
             android:textColor="@color/gray"
             android:textSize="18dp"
             android:textAppearance="@font/inter"
@@ -60,17 +60,18 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/profile_saved_articules_title"
+            android:id="@+id/textViewProfileSavedArticlesTitle"
             android:textColor="@color/black"
             android:layout_marginTop="15dp"
             android:textSize="20dp"
             android:textStyle="bold"
             android:textAppearance="@font/inter"
-            android:text="Saved articules (18)"/>
+            android:text="Saved articles"/>
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:id="@+id/profileArticleList"
             ></ListView>
 
         <TextView
@@ -86,6 +87,7 @@
         <Spinner
             android:layout_width="300dp"
             android:layout_height="47dp"
+            android:id="@+id/spinnerNewsLanguage"
             android:background="@drawable/inputfield"
             />
 
