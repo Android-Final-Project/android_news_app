@@ -17,6 +17,80 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="99dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="30dp"
+            android:id="@+id/profile_picture"
+            app:srcCompat="@drawable/user" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/profile_name"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textAppearance="@font/inter"
+            android:text="Iveta Fork"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/profile_location"
+            android:textColor="@color/gray"
+            android:textSize="18dp"
+            android:textAppearance="@font/inter"
+            android:text="Amsterdam, NL"/>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="15dp"
+            app:dividerColor="@color/navy_blue"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/profile_saved_articules_title"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textAppearance="@font/inter"
+            android:text="Saved articules (18)"/>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            ></ListView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textAppearance="@font/inter"
+            android:text="Select news Language"/>
+
+        <Spinner
+            android:layout_width="300dp"
+            android:layout_height="47dp"
+            android:background="@drawable/inputfield"
+            />
+
+    </LinearLayout>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_saved"
         android:layout_width="match_parent"
