@@ -73,11 +73,11 @@ public class SignupActivity extends AppCompatActivity {
         // For example, send a network request to your server's sign-up endpoint.
         // This is just a placeholder and will not actually send a network request.
         String fullName = fullNameInput.getText().toString();
-        // TODO: Replace the username for email (FireBase Auth)
         String username = usernameInput.getText().toString();
         String password = passwordInput.getText().toString();
 
 
+        // TODO: Replace FireBase Auth to RealTimeDataBase
         mAuth.createUserWithEmailAndPassword(username, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
