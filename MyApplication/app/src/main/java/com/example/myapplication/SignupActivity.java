@@ -10,10 +10,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
@@ -24,6 +31,10 @@ public class SignupActivity extends AppCompatActivity {
     private ImageView backButton;
 
     private FirebaseAuth mAuth;
+
+    FirebaseDatabase database;
+
+    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,26 +86,56 @@ public class SignupActivity extends AppCompatActivity {
         String fullName = fullNameInput.getText().toString();
         String username = usernameInput.getText().toString();
         String password = passwordInput.getText().toString();
+        User user = new User(fullName, username, password,"Montreal, CA");
 
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference(User.DB_REFERENCE);
 
-        // TODO: Replace FireBase Auth to RealTimeDataBase
-        mAuth.createUserWithEmailAndPassword(username, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        Query checkUserData = reference.orderByChild(User.DB_CHILD_USERNAME).equalTo(username);
+        checkUserData.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(SignupActivity.this, "Account created for: " + fullName, Toast.LENGTH_SHORT).show();
-                     Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                     startActivity(intent);
-                     finish(); // Finish this activity so the user can't return to it
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    Toast.makeText(SignupActivity.this, "Signup failed: Username already exists.", Toast.LENGTH_LONG).show();
                 } else {
-                    String errorMessage = "Something went wrong.";
-                    if(Objects.nonNull(task.getException())) {
-                        errorMessage = task.getException().getMessage();
-                    }
-                    Toast.makeText(SignupActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+
+                    reference.child(username).setValue(user, (error, ref) -> {
+                        if(Objects.nonNull(error)){
+                            Toast.makeText(SignupActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(SignupActivity.this, "Account created for: " + user.getFullName(), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish(); // Finish this activity so the user can't return to it
+                        }
+                    });
                 }
             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(SignupActivity.this, "Signup failed:" + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
         });
+//        reference.child(username).setValue(new User(fullName,username,password,"Montreal, CA")).addOnCompleteListener(this, new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//                if(task.isSuccessful()){
+//                    Toast.makeText(SignupActivity.this, "Account created for: " + fullName, Toast.LENGTH_SHORT).show();
+//                     Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+//                     startActivity(intent);
+//                     finish(); // Finish this activity so the user can't return to it
+//                } else {
+//                    String errorMessage = "Something went wrong.";
+//                    if(Objects.nonNull(task.getException())) {
+//                        errorMessage = task.getException().getMessage();
+//                    }
+//                    Toast.makeText(SignupActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+
+
 
 
     }

@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -10,6 +11,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.example.myapplication.customadapter.ProfileArticleAdapter;
+import com.example.myapplication.model.AuthenticatedUser;
 import com.example.myapplication.model.User;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     Spinner spinnerNewsLanguage;
 
+
     private final List<String> newsLanguage = Arrays.asList("English", "French", "Portuguese");
 
     private final List<String> savedArticles = Arrays.asList("Tech Giants Launch Climate initiative", "Tech Giants Launch Climate initiative", "Tech Giants Launch Climate initiative");
@@ -37,7 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        loggedUser = User.getLogged();
+        loggedUser = AuthenticatedUser.user;
 
         textViewProfileFullName = findViewById(R.id.textViewProfileFullName);
         textViewProfileLocation = findViewById(R.id.textViewProfileLocation);

@@ -13,10 +13,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.myapplication.model.AuthenticatedUser;
+import com.example.myapplication.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
     private CheckBox rememberMeCheckBox;
     private SharedPreferences sharedPreferences;
+
+    FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +66,39 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void authenticateUser(String username, String password) {
-        if ("test".equals(username) && "12345".equals(password)) {
-            if (rememberMeCheckBox.isChecked()) {
-                saveLoginDetails(username, password);
-            } else {
-                clearLoginDetails();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(User.DB_REFERENCE);
+
+        Query checkUserData = reference.orderByChild(User.DB_CHILD_USERNAME).equalTo(username);
+
+        checkUserData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    String dbPassword = snapshot.child(username).child(User.DB_CHILD_PASSWORD).getValue(String.class);
+                    if(dbPassword.equals(password)){
+                        if (rememberMeCheckBox.isChecked()) {
+                            saveLoginDetails(username, password);
+                        } else {
+                            clearLoginDetails();
+                        }
+                        AuthenticatedUser.user = snapshot.child(username).getValue(User.class);
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Login failed: Username and/or password are incorrect.", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(LoginActivity.this, "Login failed: Username not found.", Toast.LENGTH_LONG).show();
+                }
             }
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            startActivity(intent);
-        } else {
-            // Show error message
-            Toast.makeText(LoginActivity.this, "Login failed: Username and/or password are incorrect.", Toast.LENGTH_LONG).show();
-        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(LoginActivity.this, "Login failed:" + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void saveLoginDetails(String username, String password) {
