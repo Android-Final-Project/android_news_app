@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.example.myapplication.customadapter.ProfileArticleAdapter;
 import com.example.myapplication.model.AuthenticatedUser;
 import com.example.myapplication.model.User;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
         loggedUser = AuthenticatedUser.user;
 
         textViewProfileFullName = findViewById(R.id.textViewProfileFullName);
@@ -58,5 +61,29 @@ public class ProfileActivity extends AppCompatActivity {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, newsLanguage);
         spinnerNewsLanguage.setAdapter(spinnerAdapter);
 
+        setupBottomNavigationView();
+
+    }
+
+    void setupBottomNavigationView() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_profile);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            Intent intent;
+            int itemId = item.getItemId();
+            if (itemId == R.id.search_view) {
+                intent = new Intent(ProfileActivity.this, SearchActivity.class);
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.navigation_saved) {
+                intent = new Intent(ProfileActivity.this, SavedActivity.class);
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.navigation_home) {
+                intent = new Intent(ProfileActivity.this, HomeActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            return false;
+        });
     }
 }

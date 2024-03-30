@@ -5,9 +5,12 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.ImageView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -38,8 +41,30 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        setupBottomNavigationView();
     }
 
-
+    void setupBottomNavigationView() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_search);
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            Intent intent;
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_saved) {
+                intent = new Intent(SearchActivity.this, SavedActivity.class);
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.navigation_profile) {
+                intent = new Intent(SearchActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.navigation_home) {
+                intent = new Intent(SearchActivity.this, HomeActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            return false;
+        });
+    }
 
 }
