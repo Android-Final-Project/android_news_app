@@ -83,7 +83,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 return true;
             } else if (itemId == R.id.navigation_profile) {
-                intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                if(AuthenticatedUser.user.isAdmin()){
+                    intent = new Intent(HomeActivity.this, AdminActivity.class);
+                } else {
+                    intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                }
                 startActivity(intent);
                 return true;
             }

@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.example.myapplication.model.AuthenticatedUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SearchActivity extends AppCompatActivity {
@@ -55,7 +56,11 @@ public class SearchActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             } else if (itemId == R.id.navigation_profile) {
-                intent = new Intent(SearchActivity.this, ProfileActivity.class);
+                if(AuthenticatedUser.user.isAdmin()){
+                    intent = new Intent(SearchActivity.this, AdminActivity.class);
+                } else {
+                    intent = new Intent(SearchActivity.this, ProfileActivity.class);
+                }
                 startActivity(intent);
                 return true;
             } else if (itemId == R.id.navigation_home) {

@@ -5,38 +5,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.myapplication.model.AuthenticatedUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class SavedActivity extends AppCompatActivity {
+public class AdminActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_saved);
-
+        setContentView(R.layout.activity_admin);
         setupBottomNavigationView();
     }
 
     void setupBottomNavigationView() {
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_saved);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_profile);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             Intent intent;
             int itemId = item.getItemId();
             if (itemId == R.id.search_view) {
-                intent = new Intent(SavedActivity.this, SearchActivity.class);
+                intent = new Intent(AdminActivity.this, SearchActivity.class);
                 startActivity(intent);
                 return true;
-            } else if (itemId == R.id.navigation_profile) {
-                if(AuthenticatedUser.user.isAdmin()){
-                    intent = new Intent(SavedActivity.this, AdminActivity.class);
-                } else {
-                    intent = new Intent(SavedActivity.this, ProfileActivity.class);
-                }
+            } else if (itemId == R.id.navigation_saved) {
+                intent = new Intent(AdminActivity.this, SavedActivity.class);
                 startActivity(intent);
                 return true;
             } else if (itemId == R.id.navigation_home) {
-                intent = new Intent(SavedActivity.this, HomeActivity.class);
+                intent = new Intent(AdminActivity.this, HomeActivity.class);
                 startActivity(intent);
                 return true;
             }

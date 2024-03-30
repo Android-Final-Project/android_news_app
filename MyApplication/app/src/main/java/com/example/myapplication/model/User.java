@@ -10,6 +10,8 @@ public class User {
     private String password;
     private String location;
 
+    private boolean admin = false;
+
     private Language language = Language.EN;
 
     public User() {
@@ -42,6 +44,14 @@ public class User {
 
     public Language getLanguage() {
         return language;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
     public void setLanguage(Language language) {

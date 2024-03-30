@@ -47,11 +47,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
 
-
     private final List<String> newsLanguage = Language.getAllDescriptions();
 
     private final List<String> savedArticles = Arrays.asList("Tech Giants Launch Climate initiative", "Tech Giants Launch Climate initiative", "Tech Giants Launch Climate initiative");
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
         textViewProfileSavedArticlesTitle = findViewById(R.id.textViewProfileSavedArticlesTitle);
         profileArticleList = findViewById(R.id.profileArticleList);
         spinnerNewsLanguage = findViewById(R.id.spinnerNewsLanguage);
+
 
         textViewProfileFullName.setText(loggedUser.getFullName());
         textViewProfileLocation.setText(loggedUser.getLocation());
