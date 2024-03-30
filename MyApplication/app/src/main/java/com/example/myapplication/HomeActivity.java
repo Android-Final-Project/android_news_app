@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
+
+import com.example.myapplication.model.AuthenticatedUser;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.kwabenaberko.newsapilib.NewsApiClient;
@@ -101,7 +103,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         NewsApiClient newsApiClient = new NewsApiClient("997b299131dc4beb8edfceba3e9ad34a");
         newsApiClient.getTopHeadlines(
                 new TopHeadlinesRequest.Builder()
-                        .language("en")
+                        .language(AuthenticatedUser.user.getLanguage().getAbbreviation())
                         .category(category)
                         .build(),
                 new NewsApiClient.ArticlesResponseCallback() {

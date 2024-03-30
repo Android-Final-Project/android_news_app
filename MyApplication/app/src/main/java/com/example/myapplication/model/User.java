@@ -10,18 +10,17 @@ public class User {
     private String password;
     private String location;
 
-    public static User getLogged(){
-        return new User("Iveta Forkk", "iveta.fork", "12345", "Montreal, CA");
-    }
+    private Language language = Language.EN;
 
     public User() {
     }
 
-    public User(String fullName, String username, String password, String location) {
+    public User(String fullName, String username, String password, String location, Language language) {
         this.fullName = fullName;
         this.username = username;
         this.password = password;
         this.location = location;
+        this.language = language;
     }
 
 
@@ -39,5 +38,13 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 }

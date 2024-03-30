@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.model.Language;
 import com.example.myapplication.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -86,7 +87,7 @@ public class SignupActivity extends AppCompatActivity {
         String fullName = fullNameInput.getText().toString();
         String username = usernameInput.getText().toString();
         String password = passwordInput.getText().toString();
-        User user = new User(fullName, username, password,"Montreal, CA");
+        User user = new User(fullName, username, password,"Montreal, CA", Language.EN);
 
         database = FirebaseDatabase.getInstance();
         reference = database.getReference(User.DB_REFERENCE);
