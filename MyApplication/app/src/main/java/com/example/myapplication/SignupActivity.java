@@ -59,7 +59,6 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private boolean validateInput() {
-        // Check if any field is empty
         if (fullNameInput.getText().toString().isEmpty() ||
                 usernameInput.getText().toString().isEmpty() ||
                 passwordInput.getText().toString().isEmpty()) {
@@ -67,23 +66,15 @@ public class SignupActivity extends AppCompatActivity {
             return false;
         }
 
-        // Check if the password is long enough (e.g., at least 6 characters)
         if (passwordInput.getText().length() < 6) {
             Toast.makeText(this, "Password must be at least 6 characters.", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        // Add more validation as needed (e.g., regex for username, check password strength)
-
         return true;
     }
 
     private void signUpUser() {
-        // Here you would add the logic to create a new user account.
-        // This might involve sending the data to a server or storing it in a local database.
-
-        // For example, send a network request to your server's sign-up endpoint.
-        // This is just a placeholder and will not actually send a network request.
         String fullName = fullNameInput.getText().toString();
         String username = usernameInput.getText().toString();
         String password = passwordInput.getText().toString();
@@ -107,7 +98,7 @@ public class SignupActivity extends AppCompatActivity {
                             Toast.makeText(SignupActivity.this, "Account created for: " + user.getFullName(), Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                             startActivity(intent);
-                            finish(); // Finish this activity so the user can't return to it
+                            finish();
                         }
                     });
                 }
@@ -125,7 +116,7 @@ public class SignupActivity extends AppCompatActivity {
 //                    Toast.makeText(SignupActivity.this, "Account created for: " + fullName, Toast.LENGTH_SHORT).show();
 //                     Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
 //                     startActivity(intent);
-//                     finish(); // Finish this activity so the user can't return to it
+//                     finish();
 //                } else {
 //                    String errorMessage = "Something went wrong.";
 //                    if(Objects.nonNull(task.getException())) {

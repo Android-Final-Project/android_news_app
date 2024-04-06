@@ -17,6 +17,13 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/saved_articles_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/app_title"
+        android:padding="8dp"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_saved"
         android:layout_width="match_parent"

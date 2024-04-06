@@ -18,6 +18,7 @@ public class AdminActivity extends AppCompatActivity {
 
     void setupBottomNavigationView() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_profile);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             Intent intent;
             int itemId = item.getItemId();

@@ -1,29 +1,32 @@
 package com.example.myapplication;
 
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.annotation.NonNull;
-
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.kwabenaberko.newsapilib.models.Article;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import com.example.myapplication.model.Article;
 import com.squareup.picasso.Picasso;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Consumer;
 
 public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapter.NewsViewHolder> {
 
-    List<Article> articleList;
+    private List<Article> articleList;
+    private Consumer<Article> bookmarkClickCallback;
+    private Context context;
 
-    NewsRecyclerAdapter(List<Article> articleList) {
+    public NewsRecyclerAdapter(List<Article> articleList, Context context, Consumer<Article> bookmarkClickCallback) {
         this.articleList = articleList;
+        this.context = context;
+        this.bookmarkClickCallback = bookmarkClickCallback;
     }
 
     @NonNull
@@ -38,14 +41,10 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         Article article = articleList.get(position);
         holder.titleTextView.setText(article.getTitle());
         holder.sourceTextView.setText(article.getSource().getName());
-        Picasso.get().load(article.getUrlToImage())
-                .error(R.drawable.no_image_icon)
-                .placeholder(R.drawable.no_image_icon)
-                .into(holder.imageView);
+        Picasso.get().load(article.getUrlToImage()).error(R.drawable.no_image_icon).placeholder(R.drawable.no_image_icon).into(holder.imageView);
+        holder.dateTextView.setText(formatDate(article.getPublishedAt()));
 
-        // Format and set the article date
-        String articleDate = formatDate(article.getPublishedAt());
-        holder.dateTextView.setText(articleDate);
+        holder.itemView.setOnClickListener(v -> bookmarkClickCallback.accept(article));
     }
 
     @Override
@@ -53,15 +52,20 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         return articleList.size();
     }
 
-    void updateData(List<Article> data) {
-        articleList.clear();
-        articleList.addAll(data);
+    private String formatDate(Date date) {
+        if (date == null) return "Unknown date";
+        SimpleDateFormat desiredFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+        return desiredFormat.format(date);
+    }
+
+    public void updateData(List<Article> newArticles) {
+        articleList = newArticles;
         notifyDataSetChanged();
     }
 
-    class NewsViewHolder extends RecyclerView.ViewHolder {
 
-        TextView titleTextView, sourceTextView, dateTextView; // Added dateTextView
+    static class NewsViewHolder extends RecyclerView.ViewHolder {
+        TextView titleTextView, sourceTextView, dateTextView;
         ImageView imageView;
 
         NewsViewHolder(@NonNull View itemView) {
@@ -69,21 +73,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             titleTextView = itemView.findViewById(R.id.article_title);
             sourceTextView = itemView.findViewById(R.id.article_source);
             imageView = itemView.findViewById(R.id.article_image_view);
-            dateTextView = itemView.findViewById(R.id.article_date); // Initialize dateTextView
+            dateTextView = itemView.findViewById(R.id.article_date);
         }
     }
-
-    // Method to format the article's published date
-    private String formatDate(String dateString) {
-        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
-        SimpleDateFormat desiredFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
-        try {
-            Date date = isoFormat.parse(dateString);
-            return desiredFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return "Unknown date";
-        }
-    }
-
 }

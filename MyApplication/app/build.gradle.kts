@@ -28,6 +28,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -48,4 +52,10 @@ dependencies {
     implementation("com.github.KwabenBerko:News-API-Java:1.0.2")
     implementation ("com.squareup.picasso:picasso:2.8")
     implementation ("com.google.android.material:material:material")
+
+    implementation("com.google.firebase:firebase-firestore:24.1.0")
+
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation("com.google.firebase:firebase-appcheck")
+
 }

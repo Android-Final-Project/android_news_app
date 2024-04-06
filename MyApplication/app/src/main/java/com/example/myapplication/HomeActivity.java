@@ -8,18 +8,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.SearchView;
-
+import android.widget.Toast;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.example.myapplication.model.AuthenticatedUser;
+import com.example.myapplication.model.Article;
+import com.example.myapplication.model.Source;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.kwabenaberko.newsapilib.NewsApiClient;
-import com.kwabenaberko.newsapilib.models.Article;
 import com.kwabenaberko.newsapilib.models.request.TopHeadlinesRequest;
 import com.kwabenaberko.newsapilib.models.response.ArticleResponse;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.function.Consumer;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,11 +34,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     NewsRecyclerAdapter adapter;
     LinearProgressIndicator progressIndicator;
     Button btn1, btn2, btn3, btn4, btn5, btn6, btn7;
-
-    @Override
-    public <T extends View> T findViewById(int id) {
-        return super.findViewById(id);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,29 +66,57 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new NewsRecyclerAdapter(articleList);
+        adapter = new NewsRecyclerAdapter(articleList, this, article -> saveArticleForLater(article));
         recyclerView.setAdapter(adapter);
+    }
+
+    private void saveArticleForLater(Article article) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            String safeDocumentId = article.getUrl().replaceAll("/", "_");
+
+            db.collection("users")
+                    .document(userId)
+                    .collection("bookmarkedArticles")
+                    .document(safeDocumentId)
+                    .set(article)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(HomeActivity.this, "Article saved successfully", Toast.LENGTH_SHORT).show();
+                        updateAdapterForArticle(article);
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(HomeActivity.this, "Error saving article", Toast.LENGTH_SHORT).show());
+        }
+    }
+
+    private void updateAdapterForArticle(Article article) {
+        int position = articleList.indexOf(article);
+        if (position != -1) {
+            adapter.notifyItemChanged(position);
+        }
     }
 
     void setupBottomNavigationView() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            Intent intent;
+            Intent intent = null;
             int itemId = item.getItemId();
+
             if (itemId == R.id.search_view) {
                 intent = new Intent(HomeActivity.this, SearchActivity.class);
-                startActivity(intent);
-                return true;
             } else if (itemId == R.id.navigation_saved) {
                 intent = new Intent(HomeActivity.this, SavedActivity.class);
-                startActivity(intent);
-                return true;
             } else if (itemId == R.id.navigation_profile) {
-                if(AuthenticatedUser.user.isAdmin()){
+                if (AuthenticatedUser.user.isAdmin()) {
                     intent = new Intent(HomeActivity.this, AdminActivity.class);
                 } else {
                     intent = new Intent(HomeActivity.this, ProfileActivity.class);
                 }
+            }
+
+            if (intent != null) {
                 startActivity(intent);
                 return true;
             }
@@ -96,10 +125,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     void changeInProgress(boolean show) {
-        if (show)
-                progressIndicator.setVisibility(View.VISIBLE);
-        else
-            progressIndicator.setVisibility(View.INVISIBLE);
+        progressIndicator.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
     }
 
     void getNews(String category) {
@@ -113,20 +139,53 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 new NewsApiClient.ArticlesResponseCallback() {
                     @Override
                     public void onSuccess(ArticleResponse response) {
-                        runOnUiThread(()->{
+                        runOnUiThread(() -> {
                             changeInProgress(false);
-                            articleList = response.getArticles();
+                            articleList.clear();
+                            for (com.kwabenaberko.newsapilib.models.Article apiArticle : response.getArticles()) {
+                                Article myArticle = convertApiArticleToMyArticle(apiArticle);
+                                articleList.add(myArticle);
+                            }
+                            Log.d("HomeActivity", "Articles fetched: " + articleList.size());
                             adapter.updateData(articleList);
-                            adapter.notifyDataSetChanged();
                         });
                     }
 
+
                     @Override
                     public void onFailure(Throwable throwable) {
-                        Log.i("GOT FAILURE",throwable.toString());
+                        Toast.makeText(HomeActivity.this, "Failed to fetch news articles", Toast.LENGTH_SHORT).show();
+                        changeInProgress(false);
                     }
                 }
         );
+    }
+
+    private Article convertApiArticleToMyArticle(com.kwabenaberko.newsapilib.models.Article apiArticle) {
+        Article myArticle = new Article();
+        myArticle.setAuthor(apiArticle.getAuthor());
+        myArticle.setTitle(apiArticle.getTitle());
+        myArticle.setDescription(apiArticle.getDescription());
+        myArticle.setUrl(apiArticle.getUrl());
+        myArticle.setUrlToImage(apiArticle.getUrlToImage());
+
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).parse(apiArticle.getPublishedAt());
+            myArticle.setPublishedAt(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        myArticle.setContent(apiArticle.getContent());
+
+        Source mySource = new Source();
+        if (apiArticle.getSource() != null) {
+            mySource.setId(apiArticle.getSource().getId());
+            mySource.setName(apiArticle.getSource().getName());
+        }
+        myArticle.setSource(mySource);
+
+        return myArticle;
     }
 
     @Override

@@ -48,6 +48,7 @@ public class SearchActivity extends AppCompatActivity {
 
     void setupBottomNavigationView() {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_search);
+        bottomNavigationView.setSelectedItemId(R.id.search_view);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             Intent intent;
             int itemId = item.getItemId();

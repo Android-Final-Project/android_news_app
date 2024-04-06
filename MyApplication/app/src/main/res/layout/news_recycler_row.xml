@@ -36,7 +36,6 @@
                 android:layout_marginBottom="8dp"
                 android:id="@+id/article_title"/>
 
-            <!-- Horizontal LinearLayout for source and date, ensuring date is at the right -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,8 +62,15 @@
                     android:text="date"
                     android:layout_marginStart="8dp"
                     android:layout_gravity="end"/>
-
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/save_article_icon"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/bookmark"
+                android:layout_gravity="end"/>
+
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
