@@ -1,5 +1,8 @@
 package com.example.myapplication.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 
     public static final String DB_REFERENCE = "users";
@@ -13,6 +16,8 @@ public class User {
     private boolean admin = false;
 
     private Language language = Language.EN;
+
+    private List<Article> savedArticles = new ArrayList<>();
 
     public User() {
     }
@@ -46,6 +51,10 @@ public class User {
         return language;
     }
 
+    public List<Article> getSavedArticles() {
+        return savedArticles;
+    }
+
     public boolean isAdmin() {
         return admin;
     }
@@ -56,5 +65,9 @@ public class User {
 
     public void setLanguage(Language language) {
         this.language = language;
+    }
+
+    public void setSavedArticles(List<Article> savedArticles) {
+        this.savedArticles = savedArticles;
     }
 }
