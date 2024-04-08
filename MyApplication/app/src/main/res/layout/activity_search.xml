@@ -41,9 +41,8 @@
         app:queryHint="Search news"
         android:layout_below="@id/search_title"/>
 
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/news_recycler_view"
+        android:id="@+id/search_news_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/search_view" />

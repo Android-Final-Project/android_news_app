@@ -64,13 +64,6 @@
                     android:layout_gravity="end"/>
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/save_article_icon"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:src="@drawable/bookmark"
-                android:layout_gravity="end"/>
-
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

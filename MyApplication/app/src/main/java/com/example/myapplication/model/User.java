@@ -2,6 +2,8 @@ package com.example.myapplication.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class User {
 
@@ -52,7 +54,11 @@ public class User {
     }
 
     public List<Article> getSavedArticles() {
-        return savedArticles;
+        if(Objects.nonNull(savedArticles)){
+            savedArticles = savedArticles.stream().filter(article -> Objects.nonNull(article.getUrl())).collect(Collectors.toList());
+            return savedArticles;
+        }
+        return new ArrayList<>();
     }
 
     public boolean isAdmin() {

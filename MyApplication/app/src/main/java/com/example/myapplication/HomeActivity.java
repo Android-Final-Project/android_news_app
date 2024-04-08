@@ -1,31 +1,35 @@
 package com.example.myapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.example.myapplication.model.AuthenticatedUser;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.myapplication.model.Article;
+import com.example.myapplication.model.AuthenticatedUser;
 import com.example.myapplication.model.Source;
+import com.example.myapplication.model.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.kwabenaberko.newsapilib.NewsApiClient;
 import com.kwabenaberko.newsapilib.models.request.TopHeadlinesRequest;
 import com.kwabenaberko.newsapilib.models.response.ArticleResponse;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.Consumer;
+import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -35,6 +39,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     LinearProgressIndicator progressIndicator;
     Button btn1, btn2, btn3, btn4, btn5, btn6, btn7;
 
+    String language = "en";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +48,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         recyclerView = findViewById(R.id.news_recycler_view);
         progressIndicator = findViewById(R.id.progress_bar);
+
+        User loggedUser = AuthenticatedUser.user;
+
+        if(Objects.nonNull(loggedUser) && Objects.nonNull(loggedUser.getLanguage())){
+            language = loggedUser.getLanguage().getAbbreviation();
+        }
 
         btn1 = findViewById(R.id.btn_1);
         btn2 = findViewById(R.id.btn_2);
@@ -66,7 +78,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new NewsRecyclerAdapter(articleList, this, article -> saveArticleForLater(article));
+        adapter = new NewsRecyclerAdapter(articleList, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -133,7 +145,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         NewsApiClient newsApiClient = new NewsApiClient("997b299131dc4beb8edfceba3e9ad34a");
         newsApiClient.getTopHeadlines(
                 new TopHeadlinesRequest.Builder()
-                        .language(AuthenticatedUser.user.getLanguage().getAbbreviation())
+                        .language(language)
                         .category(category)
                         .build(),
                 new NewsApiClient.ArticlesResponseCallback() {
