@@ -3,53 +3,82 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.customadapter.CommentsAdapter;
 import com.example.myapplication.model.Article;
 import com.example.myapplication.model.AuthenticatedUser;
+import com.example.myapplication.model.Comment;
 import com.example.myapplication.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 public class ArticleActivity extends AppCompatActivity {
     TextView articleTitle, articleDate, articleAuthor, articleDescription;
     ImageView articleImage;
-    Button btnReadMore;
+    Button btnReadMore, btnSubmitComment;
     ImageButton btnSaveArticle;
+
+    EditText editTextComment;
+
+    ListView commentsListView;
     FirebaseDatabase database;
 
     User loggedUser;
+
+    CommentsAdapter commentsAdapter;
+
+    String url;
+
+    List<Comment> comments = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
-        String url = getIntent().getStringExtra("url");
+        url = getIntent().getStringExtra("url");
 
         articleImage = findViewById(R.id.fullArticle_picture);
         articleTitle = findViewById(R.id.fullArticle_title);
         articleDate = findViewById(R.id.fullArticle_date);
-        articleAuthor = findViewById(R.id.fullArticle_author);
         articleDescription = findViewById(R.id.fullArticle_description);
         btnReadMore = findViewById(R.id.btnReadMore);
         btnSaveArticle = findViewById(R.id.btnfullArticle_save);
+        commentsListView = findViewById(R.id.atr_comment_list_view);
+        btnSubmitComment = findViewById(R.id.btnSubmitComment);
+        editTextComment = findViewById(R.id.editTextComment);
 
         String fullArticleImage = getIntent().getStringExtra("fullArticleImage");
         Picasso.get().load(fullArticleImage).error(R.drawable.no_image_icon).placeholder(R.drawable.no_image_icon).into(articleImage);
@@ -61,7 +90,7 @@ public class ArticleActivity extends AppCompatActivity {
         articleTitle.setText(fullArticleTitle);
 
         String fullArticleAuthor = getIntent().getStringExtra("fullArticleAuthor");
-        articleAuthor.setText(fullArticleAuthor);
+//        articleAuthor.setText(fullArticleAuthor);
 
         String fullArticleDescription = getIntent().getStringExtra("fullArticleDescription");
         articleDescription.setText(fullArticleDescription);
@@ -77,6 +106,8 @@ public class ArticleActivity extends AppCompatActivity {
         } else {
             btnSaveArticle.setImageResource(R.drawable.bookmark);
         }
+
+
 
         btnReadMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +155,57 @@ public class ArticleActivity extends AppCompatActivity {
             }
         });
 
+        btnSubmitComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!editTextComment.getText().toString().isEmpty()){
+                    Comment comment = new Comment(url, editTextComment.getText().toString(), loggedUser.getFullName());
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    String id = UUID.randomUUID().toString();
+                    database.getReference(Comment.DB_REFERENCE).child(id).setValue(comment, (error, ref) -> {
+                        if(Objects.nonNull(error)){
+                            Toast.makeText(ArticleActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            editTextComment.setText("");
+                        }
+                    });
+                }
+            }
+        });
+
         setupBottomNavigationView();
+        setUpComments();
+    }
+
+    private void setUpComments() {
+        CommentsAdapter commentsAdapter = new CommentsAdapter(this, comments);
+        commentsListView.setAdapter(commentsAdapter);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference dbComments = database.getReference(Comment.DB_REFERENCE);
+        Query queryComments = dbComments.orderByChild("createdAt");
+
+        queryComments.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                comments.clear();
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    Comment comment = postSnapshot.getValue(Comment.class);
+                    if(Objects.nonNull(comment) && url.equals(comment.getUrl())){
+                        comments.add(comment);
+                    }
+                }
+                commentsAdapter.updateData(comments);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Getting Post failed, log a message
+            }
+        });
+
+
+
     }
 
     void setupBottomNavigationView() {
