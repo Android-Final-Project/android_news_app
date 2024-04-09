@@ -7,18 +7,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.model.Article;
 import com.example.myapplication.model.AuthenticatedUser;
+import com.example.myapplication.model.BanedSources;
 import com.example.myapplication.model.Source;
 import com.example.myapplication.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.kwabenaberko.newsapilib.NewsApiClient;
 import com.kwabenaberko.newsapilib.models.request.TopHeadlinesRequest;
 import com.kwabenaberko.newsapilib.models.response.ArticleResponse;
@@ -30,6 +41,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -40,6 +54,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     Button btn1, btn2, btn3, btn4, btn5, btn6, btn7;
 
     String language = "en";
+
+    List<BanedSources> sources = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,42 +87,42 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         btn6.setOnClickListener(this);
         btn7.setOnClickListener(this);
 
+
+        getSourcesAndThenNews();
+
         setupRecyclerView();
-        getNews("General");
         setupBottomNavigationView();
+    }
+
+    private void getSourcesAndThenNews() {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference reference = db.getReference(BanedSources.DB_REFERENCE);
+        Query query = reference.orderByChild("id");
+
+        reference.orderByChild("id").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sources.clear();
+                if (snapshot.exists()) {
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        BanedSources banedSources = dataSnapshot.getValue((BanedSources.class));
+                        if(Objects.nonNull(banedSources)){
+                            sources.add(banedSources);
+                        }
+                    }
+                }
+                getNews("General");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
     }
 
     void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new NewsRecyclerAdapter(articleList, this);
         recyclerView.setAdapter(adapter);
-    }
-
-    private void saveArticleForLater(Article article) {
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-            String safeDocumentId = article.getUrl().replaceAll("/", "_");
-
-            db.collection("users")
-                    .document(userId)
-                    .collection("bookmarkedArticles")
-                    .document(safeDocumentId)
-                    .set(article)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(HomeActivity.this, "Article saved successfully", Toast.LENGTH_SHORT).show();
-                        updateAdapterForArticle(article);
-                    })
-                    .addOnFailureListener(e -> Toast.makeText(HomeActivity.this, "Error saving article", Toast.LENGTH_SHORT).show());
-        }
-    }
-
-    private void updateAdapterForArticle(Article article) {
-        int position = articleList.indexOf(article);
-        if (position != -1) {
-            adapter.notifyItemChanged(position);
-        }
     }
 
     void setupBottomNavigationView() {
@@ -142,6 +158,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     void getNews(String category) {
         changeInProgress(true);
+
         NewsApiClient newsApiClient = new NewsApiClient("997b299131dc4beb8edfceba3e9ad34a");
         newsApiClient.getTopHeadlines(
                 new TopHeadlinesRequest.Builder()
@@ -155,8 +172,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             changeInProgress(false);
                             articleList.clear();
                             for (com.kwabenaberko.newsapilib.models.Article apiArticle : response.getArticles()) {
-                                Article myArticle = convertApiArticleToMyArticle(apiArticle);
-                                articleList.add(myArticle);
+                                if(Objects.nonNull(apiArticle.getSource())){
+                                    Optional<BanedSources> bannedSource = sources.stream().filter(source -> source.getId().equals(apiArticle.getSource().getId())).findFirst();
+                                    if(!bannedSource.isPresent()){
+                                        Article myArticle = convertApiArticleToMyArticle(apiArticle);
+                                        articleList.add(myArticle);
+                                    }
+                                }
                             }
                             Log.d("HomeActivity", "Articles fetched: " + articleList.size());
                             adapter.updateData(articleList);

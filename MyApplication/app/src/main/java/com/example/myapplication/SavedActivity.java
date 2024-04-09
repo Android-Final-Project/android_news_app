@@ -57,7 +57,11 @@ public class SavedActivity extends AppCompatActivity {
             } else if (itemId == R.id.navigation_saved) {
                 return true;
             } else if (itemId == R.id.navigation_profile) {
-                intent = new Intent(SavedActivity.this, ProfileActivity.class);
+                if (AuthenticatedUser.user.isAdmin()) {
+                    intent = new Intent(SavedActivity.this, AdminActivity.class);
+                } else {
+                    intent = new Intent(SavedActivity.this, ProfileActivity.class);
+                }
             } else if (itemId == R.id.navigation_home) {
                 intent = new Intent(SavedActivity.this, HomeActivity.class);
             }

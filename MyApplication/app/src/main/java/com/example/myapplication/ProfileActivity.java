@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.customadapter.ProfileArticleAdapter;
+import com.example.myapplication.model.Article;
 import com.example.myapplication.model.AuthenticatedUser;
 import com.example.myapplication.model.Language;
 import com.example.myapplication.model.User;
@@ -26,10 +27,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -49,7 +53,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     private final List<String> newsLanguage = Language.getAllDescriptions();
 
-    private final List<String> savedArticles = Arrays.asList("Tech Giants Launch Climate initiative", "Tech Giants Launch Climate initiative", "Tech Giants Launch Climate initiative");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +68,36 @@ public class ProfileActivity extends AppCompatActivity {
         spinnerNewsLanguage = findViewById(R.id.spinnerNewsLanguage);
 
 
+        List<Article> articles = loggedUser.getSavedArticles();
         textViewProfileFullName.setText(loggedUser.getFullName());
         textViewProfileLocation.setText(loggedUser.getLocation());
-        textViewProfileSavedArticlesTitle.setText("Saved articules (3)");
+        textViewProfileSavedArticlesTitle.setText(String.format("Saved articules (%s)", articles.size()));
 
-        ProfileArticleAdapter profileArticleAdapter = new ProfileArticleAdapter(this, savedArticles);
+        ProfileArticleAdapter profileArticleAdapter = new ProfileArticleAdapter(this, articles);
         profileArticleList.setAdapter(profileArticleAdapter);
+
+        profileArticleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Article article = (Article) parent.getItemAtPosition(position);
+
+                Intent intent = new Intent(ProfileActivity.this, ArticleActivity.class);
+                intent.putExtra("url", article.getUrl());
+
+                intent.putExtra("fullArticleImage", article.getUrlToImage());
+
+                if(Objects.nonNull(article.getPublishedAt())){
+                    intent.putExtra("fullArticleDate", formatDate(article.getPublishedAt()));
+                } else {
+                    intent.putExtra("fullArticleDate", "");
+                }
+
+                intent.putExtra("fullArticleTitle", article.getTitle());
+                intent.putExtra("fullArticleAuthor", article.getAuthor());
+                intent.putExtra("fullArticleDescription", article.getDescription());
+                startActivity(intent);
+            }
+        });
 
         setUpSpinnerNewsLanguage();
 
@@ -121,5 +148,11 @@ public class ProfileActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    private String formatDate(Date date) {
+        if (date == null) return "Unknown date";
+        SimpleDateFormat desiredFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+        return desiredFormat.format(date);
     }
 }

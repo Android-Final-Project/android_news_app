@@ -119,6 +119,8 @@ public class AdminActivity extends AppCompatActivity {
                         }
 
                     });
+
+                    getBannedSources();
                 }
 
             }

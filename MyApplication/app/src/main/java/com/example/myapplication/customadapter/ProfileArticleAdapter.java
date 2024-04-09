@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.model.Article;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,21 +16,21 @@ import java.util.List;
 public class ProfileArticleAdapter extends BaseAdapter {
 
     private Context context;
-    List<String> titles = new ArrayList<>();
+    List<Article> articles = new ArrayList<>();
 
-    public ProfileArticleAdapter(Context context, List<String> titles) {
+    public ProfileArticleAdapter(Context context, List<Article> articles) {
         this.context = context;
-        this.titles = titles;
+        this.articles = articles;
     }
 
     @Override
     public int getCount() {
-        return titles.size();
+        return articles.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return titles.get(position);
+        return articles.get(position);
     }
 
     @Override
@@ -44,12 +45,12 @@ public class ProfileArticleAdapter extends BaseAdapter {
                     inflate(R.layout.profile_articles_list_item, parent, false);
         }
 
-        String currentItem = (String) getItem(position);
+        Article currentItem = (Article) getItem(position);
 
         TextView textViewItemName = (TextView)
                 convertView.findViewById(R.id.profileArticleTitle);
 
-        textViewItemName.setText(currentItem);
+        textViewItemName.setText(currentItem.getTitle());
 
         return convertView;
     }
