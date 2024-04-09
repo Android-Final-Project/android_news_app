@@ -29,14 +29,8 @@
             android:textColor="@color/gray"
             android:textSize="18dp"
             android:textAppearance="@font/inter"
+            android:layout_marginTop="10dp"
             android:text="Administrator"/>
-
-        <ImageView
-            android:layout_width="99dp"
-            android:layout_height="90dp"
-            android:layout_marginTop="30dp"
-            android:id="@+id/admin_picture"
-            app:srcCompat="@drawable/account_circle" />
 
         <TextView
             android:layout_width="match_parent"
@@ -75,6 +69,20 @@
             android:textAppearance="@font/inter"
             android:text="Remove Domain"/>
 
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerDomain"
+            android:layout_marginTop="10dp"
+            />
+
+        <ListView
+            android:id="@+id/domainListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            tools:listitem="@layout/domain_list_item" />
 
     </LinearLayout>
 
