@@ -33,15 +33,15 @@
             android:text="Administrator"/>
 
         <TextView
+            android:id="@+id/textViewAdminFullName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textViewAdminFullName"
-            android:textColor="@color/black"
             android:layout_marginTop="15dp"
-            android:textSize="25dp"
-            android:textStyle="bold"
+            android:text="Full Name"
             android:textAppearance="@font/inter"
-            android:text="Iveta Fork"/>
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
@@ -50,14 +50,13 @@
             android:textColor="@color/gray"
             android:textSize="18dp"
             android:textAppearance="@font/inter"
-            android:text="Amsterdam, NL"/>
+            android:text="Montreal, CA"/>
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:layout_marginTop="15dp"
-            app:dividerColor="@color/navy_blue"
-            />
+            app:dividerColor="@color/navy_blue" />
 
         <TextView
             android:layout_width="match_parent"
@@ -73,8 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/spinnerDomain"
-            android:layout_marginTop="10dp"
-            />
+            android:layout_marginTop="10dp" />
 
         <ListView
             android:id="@+id/domainListView"

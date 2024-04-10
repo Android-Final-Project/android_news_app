@@ -85,7 +85,6 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         notifyDataSetChanged();
     }
 
-
     static class NewsViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView, sourceTextView, dateTextView;
         ImageView imageView;

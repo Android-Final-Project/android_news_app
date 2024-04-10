@@ -1,19 +1,16 @@
 package com.example.myapplication;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.customadapter.ProfileArticleAdapter;
 import com.example.myapplication.model.Article;
@@ -21,38 +18,25 @@ import com.example.myapplication.model.AuthenticatedUser;
 import com.example.myapplication.model.Language;
 import com.example.myapplication.model.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 public class ProfileActivity extends AppCompatActivity {
-
-    private User loggedUser;
-
     TextView textViewProfileFullName;
     TextView textViewProfileLocation;
     TextView textViewProfileSavedArticlesTitle;
-
     ListView profileArticleList;
-
     Spinner spinnerNewsLanguage;
-
     FirebaseDatabase database;
 
-    private final List<String> newsLanguage = Language.getAllDescriptions();
+    private User loggedUser;
 
+    private final List<String> newsLanguage = Language.getAllDescriptions();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

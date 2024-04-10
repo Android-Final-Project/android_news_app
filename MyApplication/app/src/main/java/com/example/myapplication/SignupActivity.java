@@ -12,9 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.model.Language;
 import com.example.myapplication.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,15 +24,13 @@ import java.util.Objects;
 
 public class SignupActivity extends AppCompatActivity {
 
+    FirebaseDatabase database;
+    DatabaseReference reference;
+
     private EditText fullNameInput, usernameInput, passwordInput;
     private Button continueButton;
     private ImageView backButton;
-
     private FirebaseAuth mAuth;
-
-    FirebaseDatabase database;
-
-    DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +79,7 @@ public class SignupActivity extends AppCompatActivity {
         reference = database.getReference(User.DB_REFERENCE);
 
         Query checkUserData = reference.orderByChild(User.DB_CHILD_USERNAME).equalTo(username);
+
         checkUserData.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -109,26 +105,5 @@ public class SignupActivity extends AppCompatActivity {
                 Toast.makeText(SignupActivity.this, "Signup failed:" + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-//        reference.child(username).setValue(new User(fullName,username,password,"Montreal, CA")).addOnCompleteListener(this, new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//                if(task.isSuccessful()){
-//                    Toast.makeText(SignupActivity.this, "Account created for: " + fullName, Toast.LENGTH_SHORT).show();
-//                     Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-//                     startActivity(intent);
-//                     finish();
-//                } else {
-//                    String errorMessage = "Something went wrong.";
-//                    if(Objects.nonNull(task.getException())) {
-//                        errorMessage = task.getException().getMessage();
-//                    }
-//                    Toast.makeText(SignupActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-
-
-
-
     }
 }

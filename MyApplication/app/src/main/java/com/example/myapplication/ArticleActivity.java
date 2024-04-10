@@ -3,7 +3,6 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.customadapter.CommentsAdapter;
@@ -22,10 +20,7 @@ import com.example.myapplication.model.Article;
 import com.example.myapplication.model.AuthenticatedUser;
 import com.example.myapplication.model.Comment;
 import com.example.myapplication.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,22 +40,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class ArticleActivity extends AppCompatActivity {
+
     TextView articleTitle, articleDate, articleAuthor, articleDescription;
     ImageView articleImage;
     Button btnReadMore, btnSubmitComment;
     ImageButton btnSaveArticle;
-
     EditText editTextComment;
-
     ListView commentsListView;
     FirebaseDatabase database;
-
     User loggedUser;
-
     CommentsAdapter commentsAdapter;
-
     String url;
-
     List<Comment> comments = new ArrayList<>();
 
     @Override
@@ -90,7 +80,7 @@ public class ArticleActivity extends AppCompatActivity {
         articleTitle.setText(fullArticleTitle);
 
         String fullArticleAuthor = getIntent().getStringExtra("fullArticleAuthor");
-//        articleAuthor.setText(fullArticleAuthor);
+        // articleAuthor.setText(fullArticleAuthor);
 
         String fullArticleDescription = getIntent().getStringExtra("fullArticleDescription");
         articleDescription.setText(fullArticleDescription);
@@ -107,8 +97,6 @@ public class ArticleActivity extends AppCompatActivity {
             btnSaveArticle.setImageResource(R.drawable.bookmark);
         }
 
-
-
         btnReadMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,10 +111,12 @@ public class ArticleActivity extends AppCompatActivity {
         Article article = new Article();
         article.setUrlToImage(fullArticleImage);
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+
         try {
             Date date = formatter.parse(fullArticleDate);
             article.setPublishedAt(date);
         } catch (ParseException e) {}
+
         article.setTitle(fullArticleTitle);
         article.setAuthor(fullArticleAuthor);
         article.setDescription(fullArticleDescription);
@@ -174,6 +164,7 @@ public class ArticleActivity extends AppCompatActivity {
         });
 
         setupBottomNavigationView();
+
         setUpComments();
     }
 
@@ -203,9 +194,6 @@ public class ArticleActivity extends AppCompatActivity {
                 // Getting Post failed, log a message
             }
         });
-
-
-
     }
 
     void setupBottomNavigationView() {

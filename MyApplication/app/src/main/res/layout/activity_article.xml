@@ -21,10 +21,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-
-
+        android:layout_height="wrap_content" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -112,9 +109,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="10.0sp"
-                tools:listitem="@layout/comments_list_item"
-                />
-
+                tools:listitem="@layout/comments_list_item" />
 
             <EditText
                 android:id="@+id/editTextComment"

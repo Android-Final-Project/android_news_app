@@ -17,19 +17,14 @@ import com.example.myapplication.model.AuthenticatedUser;
 import com.example.myapplication.model.BanedSources;
 import com.example.myapplication.model.Source;
 import com.example.myapplication.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.kwabenaberko.newsapilib.NewsApiClient;
 import com.kwabenaberko.newsapilib.models.request.TopHeadlinesRequest;
 import com.kwabenaberko.newsapilib.models.response.ArticleResponse;
@@ -42,8 +37,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -52,9 +45,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     NewsRecyclerAdapter adapter;
     LinearProgressIndicator progressIndicator;
     Button btn1, btn2, btn3, btn4, btn5, btn6, btn7;
-
     String language = "en";
-
     List<BanedSources> sources = new ArrayList<>();
 
     @Override
@@ -91,6 +82,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         getSourcesAndThenNews();
 
         setupRecyclerView();
+
         setupBottomNavigationView();
     }
 
@@ -184,7 +176,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             adapter.updateData(articleList);
                         });
                     }
-
 
                     @Override
                     public void onFailure(Throwable throwable) {
