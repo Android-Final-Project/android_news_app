@@ -55,7 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
         List<Article> articles = loggedUser.getSavedArticles();
         textViewProfileFullName.setText(loggedUser.getFullName());
         textViewProfileLocation.setText(loggedUser.getLocation());
-        textViewProfileSavedArticlesTitle.setText(String.format("Saved articules (%s)", articles.size()));
+        textViewProfileSavedArticlesTitle.setText(String.format("Saved articles (%s)", articles.size()));
 
         ProfileArticleAdapter profileArticleAdapter = new ProfileArticleAdapter(this, articles);
         profileArticleList.setAdapter(profileArticleAdapter);
