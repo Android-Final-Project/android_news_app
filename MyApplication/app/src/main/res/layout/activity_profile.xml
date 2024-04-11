@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/textViewProfileFullName"
             android:textColor="@color/black"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="30dp"
             android:textSize="25dp"
             android:textStyle="bold"
             android:textAppearance="@font/inter"
@@ -40,6 +40,7 @@
             android:id="@+id/textViewProfileLocation"
             android:textColor="@color/gray"
             android:textSize="18dp"
+            android:layout_marginTop="5dp"
             android:textAppearance="@font/inter"
             android:text="Amsterdam, NL"/>
 
@@ -47,15 +48,14 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:layout_marginTop="15dp"
-            app:dividerColor="@color/navy_blue"
-            />
+            app:dividerColor="@color/navy_blue" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textViewProfileSavedArticlesTitle"
-            android:textColor="@color/black"
-            android:layout_marginTop="15dp"
+            android:textColor="@color/navy_blue"
+            android:layout_marginTop="20dp"
             android:textSize="20dp"
             android:textStyle="bold"
             android:textAppearance="@font/inter"
@@ -64,7 +64,8 @@
         <ListView
             android:id="@+id/profileArticleList"
             android:layout_width="match_parent"
-            android:layout_height="255dp"
+            android:layout_height="350dp"
+            android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:divider="@android:color/transparent"
             android:dividerHeight="10.0sp"
@@ -73,19 +74,20 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:layout_marginTop="15dp"
+            android:layout_below="@id/profileArticleList"
+            android:textColor="@color/navy_blue"
+            android:layout_marginTop="20dp"
             android:textSize="20dp"
             android:textStyle="bold"
             android:textAppearance="@font/inter"
-            android:text="Select news Language"/>
+            android:text="Select news language"/>
 
         <Spinner
-            android:layout_width="300dp"
-            android:layout_height="47dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/spinnerNewsLanguage"
-            android:background="@drawable/inputfield"
-            />
+            android:background="@drawable/inputfield" />
 
     </LinearLayout>
 
