@@ -20,8 +20,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/saved_articles_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/app_title"
+        android:layout_above="@id/bottom_navigation_saved"
         android:padding="8dp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
