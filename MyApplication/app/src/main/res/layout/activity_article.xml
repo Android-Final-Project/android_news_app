@@ -107,7 +107,7 @@
             <ListView
                 android:id="@+id/atr_comment_list_view"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="300dp"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="10dp"
                 android:divider="@android:color/transparent"
