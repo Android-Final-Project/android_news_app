@@ -80,7 +80,6 @@ public class ArticleActivity extends AppCompatActivity {
         articleTitle.setText(fullArticleTitle);
 
         String fullArticleAuthor = getIntent().getStringExtra("fullArticleAuthor");
-        // articleAuthor.setText(fullArticleAuthor);
 
         String fullArticleDescription = getIntent().getStringExtra("fullArticleDescription");
         articleDescription.setText(fullArticleDescription);
@@ -191,7 +190,6 @@ public class ArticleActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Getting Post failed, log a message
             }
         });
     }
